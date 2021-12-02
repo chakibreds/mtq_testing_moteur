@@ -45,6 +45,8 @@
 *.synctex.gz
 *.out
 
-#MacOsX
+# watDiv
+saved.txt
 
+#MacOsX
 __MACOSX/
