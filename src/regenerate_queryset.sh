@@ -1,5 +1,7 @@
-for qt in testsuite/templates/*.sparql-template; 
+nb_q=1000
+
+for qt in ../watdiv/templates/*.sparql-template; 
 do
    qt2=${qt##*templates/}
-   bin/Release/watdiv -q model/wsdbm-data-model.txt ${qt} 1000 1 > testsuite/queries/${qt2%.sparql-template}.queryset ;
+   ../watdiv/watdiv -q ../watdiv/model/wsdbm-data-model.txt ${qt} ${nb_q} 1 > ../data/queries/${nb_q}/${qt2%.sparql-template}.queryset;
 done;
