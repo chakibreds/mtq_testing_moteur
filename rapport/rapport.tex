@@ -105,6 +105,20 @@ Enfin, viendra la partie concrète d'évaluation des performances. On executera 
 
 \subsection{Préparation des bancs d'essais}
 
+La première partie est de générer les jeux de données sur lesquelles les tests vont être exécutés. Pour cela, on utilise le programme \textit{WatDiv}.
+
+\subsubsection{Génération des données}
+
+La génération d'un \textit{dataset} se fait en utilisant la commande suivante :
+
+\begin{lstlisting}[language=bash]
+  ./watdiv -d <model-file> <scale-factor>
+\end{lstlisting}
+
+Pour un $scaleFactor = 1$, on obtient environ $100K$ triplets. On peut donc augmenter le nombre de triplets en augmentant la valeur de $scaleFactor$.
+
+\subsubsection{Génération des requêtes}
+
 \subsection{Analyse des bancs d’essais}
 
 \section{Plan des tests}
