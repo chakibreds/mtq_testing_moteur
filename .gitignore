@@ -46,7 +46,6 @@
 *.out
 
 # watDiv
-saved.txt
 data/dataset/
 
 
