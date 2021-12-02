@@ -111,11 +111,17 @@ La première partie est de générer les jeux de données sur lesquelles les tes
 
 La génération d'un \textit{dataset} se fait en utilisant la commande suivante :
 
-\begin{lstlisting}[language=bash]
+\begin{lstlisting}[language=bash,caption=Commande pour la création  d'un dataset]
   ./watdiv -d <model-file> <scale-factor>
 \end{lstlisting}
 
-Pour un $scaleFactor = 1$, on obtient environ $100K$ triplets. On peut donc augmenter le nombre de triplets en augmentant la valeur de $scaleFactor$.
+\begin{itemize}
+  \item \textit{model-file} est la template sur laquelle le programme se base pour créer le jeu de données;
+  \item Pour un $scaleFactor = 1$, on obtient environ $100K$ triplets. On peut donc augmenter le nombre de triplets en augmentant la valeur de $scaleFactor$.
+\end{itemize}
+
+Afin de répondre au besoin de l'évaluation, nous avons générer 
+
 
 \subsubsection{Génération des requêtes}
 
