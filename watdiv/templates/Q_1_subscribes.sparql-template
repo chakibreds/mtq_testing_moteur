@@ -2,4 +2,4 @@
 SELECT ?v0  WHERE {
 	?v0	wsdbm:subscribes	%v1% .
 }
-
+#end

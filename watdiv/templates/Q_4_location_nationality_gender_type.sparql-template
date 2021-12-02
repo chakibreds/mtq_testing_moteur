@@ -10,3 +10,4 @@ SELECT ?v0 WHERE {
 	?v0	rdf:type	%v4% .
 
 }
+#end
