@@ -44,3 +44,7 @@
 *.log  
 *.synctex.gz
 *.out
+
+#MacOsX
+
+__MACOSX/
