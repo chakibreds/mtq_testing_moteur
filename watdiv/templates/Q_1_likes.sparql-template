@@ -3,3 +3,4 @@ SELECT ?v0  WHERE {
 	?v0	wsdbm:likes		%v2% .
 }
 
+#end
