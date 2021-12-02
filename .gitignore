@@ -1,6 +1,12 @@
 # Prerequisites
 *.d
 
+# VS code
+.classpath
+.project
+.settings/
+.vscode/
+
 # Compiled Object files
 *.slo
 *.lo
@@ -30,3 +36,11 @@
 *.exe
 *.out
 *.app
+
+# latex
+*.aux  
+*.fdb_latexmk  
+*.fls  
+*.log  
+*.synctex.gz
+*.out
