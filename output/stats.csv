@@ -1,2 +1,0 @@
-nom du fichier des données,nom du fichier des reqûetes,nombre de triplets RDF,nombre de requêtes,"temps de lecture des données (ms) ",temps de lecture des requêtes (ms),temps création dico (ms),nombre d’index,temps de création des index (ms),temps total d’évaluation du workload (ms),temps total (du début à la fin du programme) (ms)
-watdiv-mini-projet/testsuite/dataset/500k_test_data.nt,watdiv-mini-projet/testsuite/queries/1000/Q_2_includes_eligibleRegion_1000.queryset,530406,1000,6829.742774,525.17887,455.87264099993007,6,3105.7316280000173,105.50623500000003,7585.659558
