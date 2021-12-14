@@ -23,7 +23,7 @@ def read_queries_results(file_name):
     return queries_results
 
 if __name__ == '__main__':
-    queries_results = read_queries_results('../output/queryResult-qengine.csv')
+    queries_results = read_queries_results('output/queryResult-jena.csv')
 
     nb_occurence_log = []
     nb_occurence_linear = []
@@ -39,10 +39,10 @@ if __name__ == '__main__':
     x = [0] + [get_group(i) for i in range(1,max(nb_occurence_log))]
     x_linear = [i for i in range(1,len(queries_results)+1)]
 
-    #plt.hist(nb_occurence_log, bins=x)
+    plt.hist(nb_occurence_log, bins=x)
     #plt.gca().set_xscale("log")
 
-    plt.plot(x_linear, nb_occurence_linear)
+    #plt.plot(x_linear, nb_occurence_linear)
     plt.xlabel('Query ID')
     plt.ylabel('0:Aucun resultat, 1:résultats')
 
