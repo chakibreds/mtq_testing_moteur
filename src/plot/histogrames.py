@@ -1,22 +1,28 @@
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
 import os
 
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+from plot import queries as q
+
 # Génération d'un histograme pour chaque fichier de requête on associe le nombre de requête n'ayant pas de réponses
-def hist_per_template(queries_responses_dir):
+def hist_per_template(queries_responses_dir, queries_dir):
     # for each file in the output directory, read the queries results and put them in a list
     hist_per_template = {}
     for file in os.listdir(queries_responses_dir):
         if file != "stats.csv":
-            template_name = file.split('.')[0]
-            hist_per_template[template_name] = 0
-            results = read_queries_results(queries_responses_dir + file)
+            template_name = file.split('-')[0]
+            results = pd.read_csv(queries_responses_dir + file)
+            reponses_null = 0
+            dup = q.duplicates_queries(q.parse_queries(queries_dir + template_name + '.queryset'))
+
+
             # for each query result, get the number of results
             for i in range(len(results)):
                 if results.iloc[i]['Result'] == "[]":
                     # empty result
-                    hist_per_template[template_name] += 1
+                    reponses_null += 1
+            hist_per_template[template_name] = (reponses_null, dup)
 
     keys = sorted(hist_per_template.keys())
     values = [hist_per_template[k] for k in keys]
@@ -35,11 +41,3 @@ def hist_per_template(queries_responses_dir):
     # Custom the subplot layout
     plt.subplots_adjust(bottom=0.4, top=0.99)
     plt.show()
-
-# read each coloumn from a csv file and put it in a list
-def read_queries_results(file_name):
-    df = pd.read_csv (file_name)
-    
-    queries_results = df
-    
-    return queries_results
