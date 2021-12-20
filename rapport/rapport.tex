@@ -93,7 +93,7 @@ Kezzoul Massili
 
 \section*{Introduction}
 
-Ce rapport fait suite à \href{https://github.com/chakibreds/mtq\_moteur\_sparql}{sa première partie} qui concerne l'implémentation d'un moteur de requête \textit{SPARQL} en étoiles en utilisant l'approche \textit{hexastore}. Dans cette partie, nous allons analyser les performances de notre implémentation par rapport à d'autres implémentation. Notamment celle de \href{https://fr.wikipedia.org/wiki/Jena\_(framework)}{Jena}.
+Ce rapport fait suite à \href{https://github.com/chakibreds/mtq\_moteur\_sparql}{sa première partie} qui concerne l'implémentation d'un moteur de requête \textit{SPARQL} en étoiles en utilisant l'approche \textit{hexastore}. Dans cette partie, nous allons analyser les performances de notre implémentation par rapport à d'autres implémentations. Notamment celle de \href{https://fr.wikipedia.org/wiki/Jena\_(framework)}{Jena}.
 
 Dans un premier temps, nous allons préparer et analyser des bancs d'essais en utilisant \textit{\href{https://dsg.uwaterloo.ca/watdiv/}{WatDiv}\footnote{Waterloo SPARQL Diversity Test Suite.}}. \textit{WatDiv} est système developpé afin de mesurer les performances d'un moteur de requête \textit{SPARQL}. Il consiste en la génération de jeux de données ainsi que des jeux de requêtes.
 
@@ -120,12 +120,62 @@ La génération d'un \textit{dataset} se fait en utilisant la commande suivante 
   \item Pour un $scaleFactor = 1$, on obtient environ $100K$ triplets. On peut donc augmenter le nombre de triplets en augmentant la valeur de $scaleFactor$.
 \end{itemize}
 
-Afin de répondre au besoin de l'évaluation, nous avons générer un \textit{dataset} de $500K$ triplets ainsi qu'un autre de $2M$ de triplets.
-
+Afin de répondre au besoin de l'évaluation, nous avons générer un \textit{dataset} de $500K$ triplets ainsi qu'un autre de $1M$ de triplets.
 
 \subsubsection{Génération des requêtes}
 
+Afin de générer des requêtes, nous avons écrit un script \textit{Shell} qui, à partir de quelques templates, génére pour chaqu'une d'elle un fichier contenant $1000$ requêtes.
+
+\begin{lstlisting}[language=bash, caption="Extrait du script qui génére les requêtes]
+  for template in ${TEMPLATE_DIR}/*.sparql-template;
+  do 
+    template_name=${template##*/}
+    template_name=${template_name%.sparql-template}
+    querie_file=$RESULT_DIR"/"$template_name".queryset"
+
+    if [ $override -eq 0 ] && [ -f $querie_file ]; then
+        echo -e "File '$querie_file' already exists.\nDo you want to overwrite ? (any key to continue / CTRL-C to exit)"
+        read $x
+        echo -e "Overwriting..."
+        override=1
+    fi
+
+    $WATDIV/watdiv -q $WATDIV/model/wsdbm-data-model.txt ${template} $NB_QUERIES 1 > $querie_file
+    i=$(($i+1))
+  done
+\end{lstlisting}
+
 \subsection{Analyse des bancs d’essais}
+
+L'analyse des bancs d'essais se fait principalement sur la \textit{qualité}\footnote{On définit ici la \textit{qualité} d'une requête par la qualité des analyses qui decoulerons de celles-ci} des requêtes générer.
+
+\subsubsection{Première version}
+
+Une première version du banc à été réaliser en utilisant les templates fournies de base. Quelques statistiques ont été extraites de ces templates afin de visualiser la \textit{qualité} des ses requêtes. 
+
+\begin{figure}[!h]
+  \centering
+  \includegraphics[width=1.\textwidth]{img/zero_dup_per_template.png}
+  \caption{Nombres de requêtes sans réponses et dupliquées}
+  \label{zerodup}
+\end{figure}
+
+Sur la figure \ref{zerodup}, on voit pour chaque template le nombre de requêtes sans réponses (en bleu) ainsi que le nombre de requêtes en doubles (en orange). Le nom des templates commence par $Q\_i$, où $i$ represente le nombre de \textit{patterns} des requêtes associées.
+
+On observe clairement sur l'histograme que trois groupes de templates se forment.
+
+\begin{description}
+  \item[1 pattern] Ces templates ont un grand nombre de requêtes dupliquées et peu de requêtes sans résultats. Cela est probablement dû au faite que plus la requête est simple (peu de pattern) et plus elle a de résultats. Par contre, cela diminue le nombre de requêtes \textit{différentes} qu'on peut générer pour cette template.
+  \item[2 patterns] On observe sur ce groupe que quasiment toutes ses requêtes sont uniques mais aussi qu'elles sont toutes sans résultats. Ce qui n'est pas souhaitable. Nous reviendrons plus tard sur ces templates afin de voir d'où viens ce problème.
+  \item[3 patterns ou plus] Ce groupe donne un résultat assez varié. On observe clairement ici une corrélation entre le nombre de doublons et le nombre de requêtes sans réponses. plus l'un est élevé et plus l'autre est faible.
+\end{description}
+
+Ces résultats ne sont pas satisfaisant car ils biaiserons fortement les résultats des performances. En effet, un nombre élevé de requêtes sans réponses affectera forcement le temps d'éxecution de notre implémenation car celle-ci s'arrête dès qu'un des patterns ne donne pas de résultat. la requête ne s'exécute pas entièrement. Cette valeur doit donc être \textit{minimal}.
+
+Le nombre de doublons aussi doit être de préférence proche de zero. Dans le cas contraire une requête qui apparait trop souvent influencera plus que les autres la moyenne du temps d'execution. Si par exemple, cette requête s'exécute plus rapidement alors la moyenne se verra sous-éstimé. Par contre, ce facteur reste moins important que le nombre de requête sans réponses.
+
+\subsubsection{Vers une amélioration du banc d'essai}
+
 
 \section{Plan des tests}
 

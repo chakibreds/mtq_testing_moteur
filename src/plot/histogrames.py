@@ -35,17 +35,28 @@ def hist_per_template(queries_responses_dir, queries_dir):
     values_dup = [hist_per_template[k][1] for k in keys]
     x_pos = np.arange(len(keys))
 
-    plt.bar(x_pos*2, values_null)
-    plt.bar(x_pos*2+0.8, values_dup)
-    
+    plt.bar(x_pos*2, values_null, color=(0.33, 0.23, 0.83, 0.3),  edgecolor='blue')
+    plt.bar(x_pos*2+0.8, values_dup, color=(1, 0.34, 0.2, 0.3),  edgecolor='orange')
+    # 255, 87, 51
+    # 85 , 60 , 213
+
     plt.xlabel('Template name')
-    plt.ylabel('Number of queries without results')
+    plt.ylabel('N° of queries')
     plt.title('Histogram of queries without results')
-    plt.legend(['Number of queries without results', 'Number of queries with duplicates'])
+    plt.legend(['Number of queries without results', 'Number duplicated queries'])
     # Create names on the x-axis
     plt.xticks(x_pos*2+0.4, keys, rotation=45,ha='right')
     #ax.set_xticklabels(xlabels, rotation=40, ha=ha[n])
+
+    for index, value in enumerate(values_null):
+        plt.text(index*2-0.3, value+15, str(value), color='black')
     
+    for index, value in enumerate(values_dup):
+        plt.text(index*2+0.5, value+15, str(value), color='grey')
+
+    plt.grid(b = True, color ='grey',
+        linestyle ='-.', linewidth = 0.75,
+        alpha = 0.4)
     # Custom the subplot layout
     plt.subplots_adjust(bottom=0.4, top=0.99)
     plt.show()
