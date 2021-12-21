@@ -26,4 +26,6 @@ def parse_dup_queries(file_name):
                 dup += 1
             else:
                 queries[patterns] = 1
-    return dup
+        max_duplicated = max(queries.values())   
+        
+    return (dup,max_duplicated)
