@@ -12,7 +12,7 @@ fi
 
 if [ ! -d $RESULT_DIR ]; then
    echo "Creating directory $RESULT_DIR"
-   mkdir $RESULT_DIR || echo "Error creating directory $RESULT_DIR" && exit 1
+   mkdir $RESULT_DIR
 fi
 
 NB_QUERIES=1000

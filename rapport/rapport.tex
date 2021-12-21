@@ -133,11 +133,11 @@ Afin de générer des requêtes, nous avons écrit un script \textit{Shell} qui,
     template_name=${template_name%.sparql-template}
     querie_file=$RESULT_DIR"/"$template_name".queryset"
 
-    if [ $override -eq 0 ] && [ -f $querie_file ]; then
+    if [ $overwrite -eq 0 ] && [ -f $querie_file ]; then
         echo -e "File '$querie_file' already exists.\nDo you want to overwrite ? (any key to continue / CTRL-C to exit)"
         read $x
         echo -e "Overwriting..."
-        override=1
+        overwrite=1
     fi
 
     $WATDIV/watdiv -q $WATDIV/model/wsdbm-data-model.txt ${template} $NB_QUERIES 1 > $querie_file

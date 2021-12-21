@@ -10,19 +10,19 @@
 #namespace	sorg=http://schema.org/
 #namespace 	wsdbm=http://db.uwaterloo.ca/~galuc/wsdbm/
 
-<type*>		wsdbm:Genre 21
+<type*>		wsdbm:Genre 35
 </type>
-<type*>		wsdbm:SubGenre 145
+<type*>		wsdbm:SubGenre 280
 </type>
 <type*>		wsdbm:Topic 250
 </type>
 <type*>		wsdbm:ProductCategory 15
 </type>
-<type*>		wsdbm:City 240
+<type*>		wsdbm:City 1200
 </type>
 <type*>		wsdbm:Country 250
 </type>
-<type*>		wsdbm:Language 35
+<type*>		wsdbm:Language 65
 </type>
 <type*>		wsdbm:Role 3
 </type>
@@ -220,10 +220,10 @@
 <pgroup>	1.0
 #predicate	wsdbm:userId	integer	1000000	9999999
 </pgroup>
-<pgroup>	0.2
+<pgroup>	0.5
 #predicate	sorg:birthDate	date	1970-01-01 1999-12-31
 </pgroup>
-<pgroup>	0.05
+<pgroup>	0.20
 #predicate	sorg:telephone	integer 1111111 9999999
 </pgroup>
 </type>
