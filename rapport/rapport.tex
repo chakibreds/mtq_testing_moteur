@@ -170,12 +170,33 @@ On observe clairement sur l'histograme que trois groupes de templates se forment
   \item[3 patterns ou plus] Ce groupe donne un résultat assez varié. On observe clairement ici une corrélation entre le nombre de doublons et le nombre de requêtes sans réponses. plus l'un est élevé et plus l'autre est faible.
 \end{description}
 
-Ces résultats ne sont pas satisfaisant car ils biaiserons fortement les résultats des performances. En effet, un nombre élevé de requêtes sans réponses affectera forcement le temps d'éxecution de notre implémenation car celle-ci s'arrête dès qu'un des patterns ne donne pas de résultat. la requête ne s'exécute pas entièrement. Cette valeur doit donc être \textit{minimal}.
+Ces résultats ne sont pas satisfaisant car ils biaiserons fortement les résultats des performances. En effet, un nombre élevé de requêtes sans réponses affectera forcement le temps d'éxecution de notre implémentation car celle-ci s'arrête dès qu'un des patterns ne donne pas de résultat. la requête ne s'exécute pas entièrement. Cette valeur doit donc être \textit{minimal}.
 
-Le nombre de doublons aussi doit être de préférence proche de zero. Dans le cas contraire une requête qui apparait trop souvent influencera plus que les autres la moyenne du temps d'execution. Si par exemple, cette requête s'exécute plus rapidement alors la moyenne se verra sous-éstimé. Par contre, ce facteur reste moins important que le nombre de requête sans réponses.
+Le nombre de doublons aussi doit être de préférence proche de zero. Dans le cas contraire une requête qui apparait trop souvent influencera plus que les autres la moyenne du temps d'execution. Si par exemple, cette requête s'exécute plus rapidement alors la moyenne se verra sous-éstimé. Par contre, ce facteur reste moins important que le nombre de requête sans réponses. De plus, le nombre de doublons, i.e le nombre de requêtes qui se repéte au moin une fois, n'est pas un nombre représentatif du problème des doublons. En effet, si par exemple, on a $N$ doublons et que c'est une seule requête qui se repéte $N$ fois. Alors ce cas sera beaucoup plus problèmatique que le cas où on a $N/2$ requêtes qui se repétent $2$ fois chaqu'une. Donc le nombre maximum de répétition d'une requête est un indicateur à privilégié au nombre de doublons.
 
 \subsubsection{Vers une amélioration du banc d'essai}
 
+Les requêtes à un seul pattern donnent un résultat satisfaisant. On a donc décider de les laisser tel quel. Par contre, les requêtes avec deux patterns ne le sont pas du tout. Pour remedier à cela nous avons changer les templates associées. On obtient à la fin la figure suivante : 
+
+\begin{figure}[!h]
+  \centering
+  \includegraphics[width=1.\textwidth]{img/zero_dup_per_template_ameliore.png}
+  \caption{Nombres de requêtes sans réponses et dupliquées - amélioré}
+  \label{zerodup2}
+\end{figure}
+
+On voit ici que le nombre de requêtes sans réponses est assez faible. Par contre, le nombre de doublons n'a pas changé. Ceci est dù à l'implémentation de \textit{WatDiv} qui ne permet pas\footnote{En tout cas, pas à notre connaissance} la génération de requêtes sans doublons.
+
+Pour remedier à cela, nous avons calculé, comme précisé dans la section précédente, le nombre maximum de répétition d'une requête (Qu'on va noté $M$ dans ce qui suit). Ce qui nous donne le graphe ci-dessous.
+
+\begin{figure}[!h]
+  \centering
+  %\includegraphics[width=1.\textwidth]{img/zero_dup_per_template_ameliore.png}
+  %\caption{Nombres de requêtes sans réponses et dupliquées - amélioré}
+  %\label{zerodup2}
+\end{figure}
+
+On observe ici que, pour les requêtes à un seul pattern, $M$ n'excéde pas 15. Ce qui est un bon résultat. Mais, pour ce qui est des requêtes à deux pattern et plus, on a un $M$ qui tourne autour des 100. Donc une requête qui se repéte 100 fois influencera forcement la partie d'évaluation des performances.
 
 \section{Plan des tests}
 
