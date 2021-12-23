@@ -192,11 +192,22 @@ Pour remedier à cela, nous avons calculé, comme précisé dans la section pré
 \begin{figure}[!h]
   \centering
   \includegraphics[width=1.\textwidth]{img/max_dup.png}
-  \caption{Nombres maximum de maximum de répétition d'une requête par template}
+  \caption{Nombres maximum de répétition d'une requête par template}
   \label{maxdup}
 \end{figure}
 
 On observe ici que, pour les requêtes à un seul pattern, $M$ n'excéde pas 15. Ce qui est un bon résultat. Mais, pour ce qui est des requêtes à deux pattern et plus, on a un $M$ qui tourne autour des 100. Donc une requête qui se repéte 100 fois influencera forcement la partie d'évaluation des performances.
+
+En changeant les templates ont pas réussi à minimiser les deux valeurs de façon satisfaisante. Le meilleur résultat qu'on a pu avoir est le suivant :
+
+\begin{figure}[!h]
+  \centering
+  \includegraphics[width=0.70\textwidth]{img/max_dup_final.png}
+  \caption{Nombres maximum de répétition d'une requête par template - amelioré}
+  \label{maxdupfinal}
+\end{figure}
+
+On a réussi a trouvé des templates à deux patterns avec un résultat satisfaisant, mais pour ce qui est des requêtes à 3 patterns il est beaucoup plus compliqué d'en trouver. Si une template donne peu de duplications alors elle est donnera forcement plus requêtes sans réponses. On a donc décider de privilégié cette derniére.
 
 \section{Plan des tests}
 

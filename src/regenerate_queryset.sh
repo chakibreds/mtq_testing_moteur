@@ -2,8 +2,8 @@
 # We create a file by template
 
 WATDIV="../watdiv"
-TEMPLATE_DIR=$WATDIV"/templates"
-RESULT_DIR="../data/queries/file-per-template"
+TEMPLATE_DIR=$WATDIV"/templates-final"
+RESULT_DIR="../data/queries/file-per-template-final"
 
 if [ ! -d $WATDIV ] || [ ! -d $TEMPLATE_DIR ]; then
    echo "Error: watdiv or template directory not found"
