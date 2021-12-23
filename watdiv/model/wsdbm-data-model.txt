@@ -313,7 +313,7 @@
 
 // Associations for wsdbm:Review ////////////////////////////////////////////////////////
 #association	wsdbm:Review	rev:reviewer		wsdbm:User		2 1		1.0	UNIFORM	@null		@wsdbm:Role1
-#association	wsdbm:Product	rev:hasReview		wsdbm:Review		1 60[normal]	0.2	UNIFORM
+#association	wsdbm:Product	rev:hasReview		wsdbm:Review		1 60[normal]	0.8	UNIFORM
 /////////////////////////////////////////////////////////////////////////////////////////
 
 //#statistics	wsdbm:SubGenre	rdf:type		wsdbm:Genre
