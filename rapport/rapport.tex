@@ -198,7 +198,7 @@ Pour remedier à cela, nous avons calculé, comme précisé dans la section pré
 
 On observe ici que, pour les requêtes à un seul pattern, $M$ n'excéde pas 15. Ce qui est un bon résultat. Mais, pour ce qui est des requêtes à deux pattern et plus, on a un $M$ qui tourne autour des 100. Donc une requête qui se repéte 100 fois influencera forcement la partie d'évaluation des performances.
 
-En changeant les templates ont pas réussi à minimiser les deux valeurs de façon satisfaisante. Le meilleur résultat qu'on a pu avoir est le suivant :
+En changeant les templates ont a pas réussi à minimiser les deux valeurs de façon satisfaisante. Le meilleur résultat qu'on a pu avoir est le suivant :
 
 \begin{figure}[!h]
   \centering
@@ -207,9 +207,61 @@ En changeant les templates ont pas réussi à minimiser les deux valeurs de faç
   \label{maxdupfinal}
 \end{figure}
 
-On a réussi a trouvé des templates à deux patterns avec un résultat satisfaisant, mais pour ce qui est des requêtes à 3 patterns il est beaucoup plus compliqué d'en trouver. Si une template donne peu de duplications alors elle est donnera forcement plus requêtes sans réponses. On a donc décider de privilégié cette derniére.
+On a réussi a trouvé des templates à deux patterns avec un résultat satisfaisant, mais pour ce qui est des requêtes à 3 patterns il est beaucoup plus compliqué d'en trouver. Si une template donne peu de duplications alors elle donnera forcement plus requêtes sans réponses. On a donc décider de privilégié cette derniére.
 
-\section{Plan des tests}
+\section{Hardware et Software}
+
+Les tests se feront dans une machine avec les caractèristiques suivantes :
+
+\paragraph{Hardware}
+
+\begin{description}
+  \item[CPU] Intel(R) Core(TM) i5-7200U CPU @ 2.50GHz, 3072 KB cache $\times$ 4
+  \item[Mémoire vive] 7,6 Gio
+  \item[Disque] 1 To Toshiba @ 5400 RPM
+\end{description}
+
+\paragraph{Software}
+
+\begin{description}
+  \item[Système d'exploitation] Pop!\_OS 21.04, 64 bits
+  \item[Java] OpenJDK 11.0.11 2021-04-20
+  \item[Python] Python 3.9.5
+\end{description}
+
+Cette configuration n'est pas optimale. En effet, la machine utilisé est un ordinateur portable, ce qui n'est pas le serveur de base de données le plus approprié et le plus représentatif. De plus, à cause de la limitation au niveau de la mémoire vive, on ne peut pas charger en mémoire un \textit{dataset} de plus de $2M$ de tuples.
+
+\section{Plans de tests}
+
+Avant de définir les plans de tests, nous devons tout d'abords définir les métriques permettant d’évaluer les performances du moteur de requêtes.
+
+\subsection{Métriques}
+
+Le moteur de requêtes peut-être évalué sur plusieurs critères: la qualité, l'efficacité et la performance. 
+
+
+\begin{description}
+  \item[Qualité] On définis la qualité d'un système par le pourcentage des réponses correctes données par ce dernier. Pour cela, on compare nos résultats avec ceux d'un système de confiance. Dans notre cas, ça sera \textit{Jena}.
+
+  \begin{description}
+    \item[La solidité] est le pourcentage de réponses de notre système qui sont aussi des réponses de \textit{Jena}
+    \item[Complétude] est le pourcentage de réponses de \textit{Jena} qui sont aussi des réponses de notre système.
+  \end{description}
+
+  \item[Temps de réponse] C'est le temps d'evaluation d'une requête ($ms / query$)
+  \item[Débit] Le nombre de requêtes évaluées en un certain temps ($query / ms$)
+  \item[Ressources utilisées] Le nombre de CPU et de mémoire utilisés par le système ($Mo$ ou temps de $CPU$).
+  \item[Scalabilité] \\
+  \begin{itemize}
+    \item Dégradation du temps de réponse avec plus de données.
+    \item Réduction du temps de réponse avec plus de ressources.
+  \end{itemize}
+\end{description}
+
+\subsection{Facteurs}
+
+\subsection{Protocoles}
+
 
 \section{Évaluation des performances}
 
