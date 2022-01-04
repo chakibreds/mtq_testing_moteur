@@ -1,16 +1,16 @@
-# Ce script réalise le protocol de test de qualité
+# Ce script réalise le protocole de test de qualité
 
-DATASET="../data/2M.nt"
+DATASET="../data/dataset/2M.nt"
 QUERIES="../data/queries/file-per-template-final/"
 
-PY="protocole/qualite.py"
+PY="./protocoles/qualite.py"
 JAR="../rdfengine.jar"
 
 OUTPUT="../output/test-qualite/"
 O_QENGINE=$OUTPUT"qengine/"
 O_JENA=$OUTPUT"jena/"
 
-CMDJAR="java -jar "$JAR" -export_query_results -queries "$QUERIES" -data "$DATA" -output "
+CMDJAR="java -jar $JAR -export_query_results -queries $QUERIES -data $DATASET -output "
 
 if [ ! -d $QUERIES ] || [ ! -d $TEMPLATE_DIR ]; then
    echo "Error: directory not found"
@@ -19,7 +19,7 @@ fi
 
 if [ ! -f $DATASET ] || [ ! -f $PY ] || [ ! -f $JAR ]; then
    echo "Error: file not found"
-   #exit 1
+   exit 1
 fi
 
 if [ ! -d $OUTPUT ]; then
@@ -48,12 +48,14 @@ echo "Output will be in "$O_QENGINE
 
 $CMDJAR $O_QENGINE > /dev/null
 
+echo ""
 echo "Running jena on dataset "$DATASET" and queries "$QUERIES
 echo "Output will be in "$O_JENA
 
 $CMDJAR $O_JENA -jena > /dev/null
 
+echo ""
 echo "Runninge "$PY
 
-echo python $PY $O_QENGINE $O_JENA
+python $PY $O_QENGINE $O_JENA
 
