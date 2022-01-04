@@ -244,7 +244,7 @@ Le moteur de requêtes peut-être évalué sur plusieurs critères: la qualité,
   \item[Qualité] On définis la qualité d'un système par le pourcentage des réponses correctes données par ce dernier. Pour cela, on compare nos résultats avec ceux d'un système de confiance. Dans notre cas, ça sera \textit{Jena}.
 
   \begin{description}
-    \item[La solidité] est le pourcentage de réponses de notre système qui sont aussi des réponses de \textit{Jena}
+    \item[La correction] est le pourcentage de réponses de notre système qui sont aussi des réponses de \textit{Jena}
     \item[Complétude] est le pourcentage de réponses de \textit{Jena} qui sont aussi des réponses de notre système.
   \end{description}
 
@@ -295,9 +295,18 @@ Après avoir exécuté notre protocole de contrôle de qualité, nous avons obte
 
 À noter que ces tests de qualité ont été réaliser sur deux datasets de 1 et 2 millions de tuples. Cette expérimentation est d'ailleurs reproductible en utilisant le script \textit{test-qualite.sh} qui se trouve dans le répertoire \textit{src}.
 
-\subsection{Temps d'évaluation}
+\subsection{Temps d'évaluation et scalabilité}
+En réalisant le deuxième protocole décrit plus haut, on a obtenu le graph suivant : 
 
-\subsection{Scalabilité}
+\begin{figure}[!h]
+  \centering
+  \includegraphics[width=1.\textwidth]{img/temps_execution.png}
+  \caption{Comparais}
+\end{figure}
+
+On remarque bien du graph, que le temps d'exécution de notre système se dégrade, autrement dit le temps d'exécution augmente en variant le nombre de tuples entre $100K$ et $2000K$. Cela peut être définit par la scalabilité. 
+
+On remarque aussi que notre système est plus rapide que \textit{Jena} quand il y'a un petit nombre de tuples, ça peut s'expliquer du fait que notre système est conçu pour les requêtes en étoiles seulement, par contre \textit{Jena} est fait pour tout type de requête \textit{SPARQL}. On voit aussi que \textit{Jena} est plus performant que notre système quand le nombre de tuple est de $2000K$, Cela peut être expliqué par le fait que \textit{Jena} n'est pas scalable, ce qui est vrai, vu que le temps d'exécution de \textit{Jena} est presque constant en variant le nombre de tuples, qui est tout le contraire de notre système.
 
 \subsection{Expérience sur la taille des données et de la mémoire}
 
@@ -306,6 +315,10 @@ Après avoir exécuté notre protocole de contrôle de qualité, nous avons obte
 \subsection{Apport des évaluations}
 
 \subsection{Perspectives d'amélioration}
+Notre système traite les requêtes en étoiles seulement, on aurait voulu traiter plus de type de requête pour que notre système soit comparable entièrement à \textit{Jena}. 
+
+On aurait pu supprimer les doublons pour peut être avoir une meilleure évaluation, mais on a pensé qu'on aura un petit workload, donc ce qui était possible de faire, c'est de chercher encore plus loin en ce qui concerne le model et les templates, pour avoir un workload sans doublans et sans réponses vides. 
+
 
 
 \end{document}
