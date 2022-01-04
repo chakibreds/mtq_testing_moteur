@@ -93,7 +93,7 @@ Kezzoul Massili
 
 \section*{Introduction}
 
-Ce rapport fait suite à \href{https://github.com/chakibreds/mtq\_moteur\_sparql}{sa première partie} qui concerne l'implémentation d'un moteur de requête \textit{SPARQL} en étoiles en utilisant l'approche \textit{hexastore}. Dans cette partie, nous allons analyser les performances de notre implémentation par rapport à d'autres implémentations. Notamment celle de \href{https://fr.wikipedia.org/wiki/Jena\_(framework)}{Jena}.
+Ce rapport fait suite à \href{https://github.com/chakibreds/mtq\_moteur\_sparql}{la première partie} du projet qui concerne l'implémentation d'un moteur de requête \textit{SPARQL} en étoiles en utilisant l'approche \textit{hexastore}. Dans cette partie, nous allons analyser les performances de notre implémentation par rapport à d'autres implémentations. Notamment celle de \href{https://fr.wikipedia.org/wiki/Jena\_(framework)}{Jena}.
 
 Dans un premier temps, nous allons préparer et analyser des bancs d'essais en utilisant \textit{\href{https://dsg.uwaterloo.ca/watdiv/}{WatDiv}\footnote{Waterloo SPARQL Diversity Test Suite.}}. \textit{WatDiv} est système developpé afin de mesurer les performances d'un moteur de requête \textit{SPARQL}. Il consiste en la génération de jeux de données ainsi que des jeux de requêtes.
 
@@ -251,7 +251,7 @@ Le moteur de requêtes peut-être évalué sur plusieurs critères: la qualité,
   \item[Temps de réponse] C'est le temps d'evaluation d'une requête ($ms / query$)
   \item[Débit] Le nombre de requêtes évaluées en un certain temps ($query / ms$)
   \item[Ressources utilisées] Le nombre de CPU et de mémoire utilisés par le système ($Mo$ ou temps de $CPU$).
-  \item[Scalabilité] \\
+  \item[Scalabilité]
   \begin{itemize}
     \item Dégradation du temps de réponse avec plus de données.
     \item Réduction du temps de réponse avec plus de ressources.
@@ -260,8 +260,30 @@ Le moteur de requêtes peut-être évalué sur plusieurs critères: la qualité,
 
 \subsection{Facteurs}
 
+Un facteur est une variable ayant des alternatives qui peuvent affecter la mesure des performances du système. Dans notre cas, les facteurs qu'on peut prendre en compte sont les suivants (classés selon leur importance) :
+
+\begin{itemize}
+  \item Taille de la mémoire
+  \item Taille des données
+  \item Workload
+  \item Type CPU
+\end{itemize}
+
+Chaqu'un de ces facteurs admet des niveaux (des valeurs possibles) qui peuvent affecter grandement la mesure des performances. Dans l'idéal, on voudra tester toutes les valeurs possibles (\textit{Full Factorial Design}). Mais cela est généralement impossible, car le nombre d'expérimentation à réaliser est exponentielle. Une autre manière de procéder est de faire varier un seul facteur à la fois. Par contre, cette méthode ignorent l'interaction entre les facteurs qui peuvent parfois être importante. Il nous reste le \textit{Fractional Design} qui consiste à choisir un sous-ensemble des facteurs et de réaliser dessus un \textit{Full Factorial Design}. Dans la partie d'évaluation, nous allons réaliser un $2^2$ \textit{Factorial Design}. On choisira 2 facteurs avec 2 niveaux chaqu'un. En effet, cette méthode est simple à analyser avec un modèle de régression non-linéaire. Cette expérimentation portera sur la taille de la mémoire et des données, car ce sont les deux principaux facteurs.
+
 \subsection{Protocoles}
 
+Dans cette partie, nous allons définir le protocole de test. Celui-ci se découpe en deux groupes : le test de la qualité des réponses et la mesure des performances.
+
+\subsubsection{Qualité}
+
+Afin de mesurer la qualité des réponses, nous allons définir un script shell qui exécute notre système ainsi que celui de \textit{Jena}. Les résultats seront stockés dans un dossier nommé \textit{test-qualité} dans le répertoire \textit{output}. Ensuite, un script python sera appelé sur les deux résultats afin de les comparer. Dans un premier temps, nous allons calculer le pourcentage des réponses identiques. Si celui-ci n'est pas de 100\%, on procédera, dans un second temps, au calcul de la \textit{complétude} et de la \textit{correction} suivant le même protocole.
+
+\subsubsection{Mesure des performances}
+
+La mesure des performances sera un peu plus complexe que la qualité. Notre objectif est d'obtenir un graphe comparant notre système à \textit{Jena}. On calculera le temps de réponse en faisant varier la taille des données. On pourra y voir le temps de réponse ainsi que la scalabilité des deux systèmes.
+
+Pour obtenir ces mesures, voici le protocole utilisé. À l'aide d'un script shell, on exécutera les deux systèmes sur plusieurs \textit{dataset}. Les résultats seront stockés dans le répertoire \textit{output/test-performances}. Ensuite, toujours à l'aide du script shell, un script python sera utilisé sur ces résultats (Les fichiers \textit{stats.csv}), afin de récupérer les temps d'exécution et d'afficher les graphes correspondants.
 
 \section{Évaluation des performances}
 
