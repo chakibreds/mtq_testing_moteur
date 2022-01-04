@@ -95,11 +95,20 @@ Kezzoul Massili
 
 Ce rapport fait suite à \href{https://github.com/chakibreds/mtq\_moteur\_sparql}{la première partie} du projet qui concerne l'implémentation d'un moteur de requête \textit{SPARQL} en étoiles en utilisant l'approche \textit{hexastore}. Dans cette partie, nous allons analyser les performances de notre implémentation par rapport à d'autres implémentations. Notamment celle de \href{https://fr.wikipedia.org/wiki/Jena\_(framework)}{Jena}.
 
-Dans un premier temps, nous allons préparer et analyser des bancs d'essais en utilisant \textit{\href{https://dsg.uwaterloo.ca/watdiv/}{WatDiv}\footnote{Waterloo SPARQL Diversity Test Suite.}}. \textit{WatDiv} est système developpé afin de mesurer les performances d'un moteur de requête \textit{SPARQL}. Il consiste en la génération de jeux de données ainsi que des jeux de requêtes.
+
+
+Dans un premier temps, nous allons préparer et analyser des bancs d'essais en utilisant \textit{\href{https://dsg.uwaterloo.ca/watdiv/}{WatDiv}\footnote{Waterloo SPARQL Diversity Test Suite.}}. \textit{WatDiv} est système développé afin de mesurer les performances d'un moteur de requête \textit{SPARQL}. Il consiste en la génération de jeux de données ainsi que des jeux de requêtes.
+
+
 
 Dans un second temps, nous allons définir et comparer plusieurs plans de tests afin d'en trouver un (ou plusieurs) qui donne des résultats correctes, significatifs et interprétables.
 
-Enfin, viendra la partie concrète d'évaluation des performances. On executera les plans de tests précédemment réalisés. Suivant les résultats obtenus, nous les présenterons selon des représentations graphiques que nous allons analyser. Nous expliquerons aussi les raisons à la base de ces résultats.
+
+
+Enfin, viendra la partie concrète d'évaluation des performances. On exécutera les plans de tests précédemment réalisés. Suivant les résultats obtenus, nous les présenterons selon des représentations graphiques que nous allons analyser. Nous expliquerons aussi les raisons à la base de ces résultats.
+
+
+
 
 \section{Bancs d'essais}
 
@@ -120,11 +129,11 @@ La génération d'un \textit{dataset} se fait en utilisant la commande suivante 
   \item Pour un $scaleFactor = 1$, on obtient environ $100K$ triplets. On peut donc augmenter le nombre de triplets en augmentant la valeur de $scaleFactor$.
 \end{itemize}
 
-Afin de répondre au besoin de l'évaluation, nous avons générer un \textit{dataset} de $500K$ triplets ainsi qu'un autre de $1M$ de triplets.
+Afin de répondre au besoin de l'évaluation, nous avons généré un \textit{dataset} de $500K$ triplets ainsi qu'un autre de $1M$ de triplets.
 
 \subsubsection{Génération des requêtes}
 
-Afin de générer des requêtes, nous avons écrit un script \textit{Shell} qui, à partir de quelques templates, génére pour chacune d'elle un fichier contenant $1000$ requêtes.
+Afin de générer des requêtes, nous avons écrit un script \textit{Shell} qui, à partir de quelques templates, génère pour chacune d'elle un fichier contenant $1000$ requêtes.
 
 \begin{lstlisting}[language=bash, caption="Extrait du script qui génére les requêtes]
   for template in ${TEMPLATE_DIR}/*.sparql-template;
@@ -147,117 +156,116 @@ Afin de générer des requêtes, nous avons écrit un script \textit{Shell} qui,
 
 \subsection{Analyse des bancs d’essais}
 
-L'analyse des bancs d'essais se fait principalement sur la \textit{qualité}\footnote{On définit ici la \textit{qualité} d'une requête par la qualité des analyses qui decoulerons de celles-ci} des requêtes générer.
+L'analyse des bancs d'essais se fait principalement sur la \textit{qualité}\footnote{On définit ici la \textit{qualité} d'une requête par la qualité des analyses qui découlerons de celles-ci} des requêtes générer.
 
 \subsubsection{Première version}
 
-Une première version du banc à été réaliser en utilisant les templates fournies de base. Quelques statistiques ont été extraites de ces templates afin de visualiser la \textit{qualité} des ses requêtes. 
+Une première version du banc a été réalisée en utilisant les templates fournies de base. Quelques statistiques ont été extraites de ces templates afin de visualiser la \textit{qualité} des ses requêtes.
 
 \begin{figure}[!h]
-  \centering
-  \includegraphics[width=1.\textwidth]{img/zero_dup_per_template.png}
-  \caption{Nombres de requêtes sans réponses et dupliquées}
-  \label{zerodup}
+\centering
+\includegraphics[width=1.\textwidth]{img/zero_dup_per_template.png}
+\caption{Nombres de requêtes sans réponses et dupliquées}
+\label{zerodup}
 \end{figure}
 
 Sur la figure \ref{zerodup}, on voit pour chaque template le nombre de requêtes sans réponses (en bleu) ainsi que le nombre de requêtes en doubles (en orange). Le nom des templates commence par $Q\_i$, où $i$ represente le nombre de \textit{patterns} des requêtes associées.
 
-On observe clairement sur l'histograme que trois groupes de templates se forment.
+On observe clairement sur l'histogramme que trois groupes de templates se forment.
 
 \begin{description}
-  \item[1 pattern] Ces templates ont un grand nombre de requêtes dupliquées et peu de requêtes sans résultats. Cela est probablement dû au faite que plus la requête est simple (peu de pattern) et plus elle a de résultats. Par contre, cela diminue le nombre de requêtes \textit{différentes} qu'on peut générer pour cette template.
-  \item[2 patterns] On observe sur ce groupe que quasiment toutes ses requêtes sont uniques mais aussi qu'elles sont toutes sans résultats. Ce qui n'est pas souhaitable. Nous reviendrons plus tard sur ces templates afin de voir d'où viens ce problème.
-  \item[3 patterns ou plus] Ce groupe donne un résultat assez varié. On observe clairement ici une corrélation entre le nombre de doublons et le nombre de requêtes sans réponses. plus l'un est élevé et plus l'autre est faible.
+\item[1 pattern] Ces templates ont un grand nombre de requêtes dupliquées et peu de requêtes sans résultats. Cela est probablement dû au fait que plus la requête est simple (peu de pattern) et plus elle a de résultats. Par contre, cela diminue le nombre de requêtes \textit{différentes} qu'on peut générer pour cette template.
+\item[2 patterns] On observe sur ce groupe que quasiment toutes ses requêtes sont uniques mais aussi qu'elles sont toutes sans résultats. Ce qui n'est pas souhaitable. Nous reviendrons plus tard sur ces templates afin de voir d'où viens ce problème.
+\item[3 patterns ou plus] Ce groupe donne un résultat assez varié. On observe clairement ici une corrélation entre le nombre de doublons et le nombre de requêtes sans réponses. Plus l'un est élevé et plus l'autre est faible.
 \end{description}
 
-Ces résultats ne sont pas satisfaisant car ils biaiserons fortement les résultats des performances. En effet, un nombre élevé de requêtes sans réponses affectera forcement le temps d'éxecution de notre implémentation car celle-ci s'arrête dès qu'un des patterns ne donne pas de résultat. la requête ne s'exécute pas entièrement. Cette valeur doit donc être \textit{minimal}.
+Ces résultats ne sont pas satisfaisants, car ils biaiseront fortement les résultats des performances. En effet, un nombre élevé de requêtes sans réponses affectera forcément le temps d'exécution de notre implémentation, car celle-ci s'arrête dès qu'un des patterns ne donne pas de résultat. La requête ne s'exécute pas entièrement. Cette valeur doit donc être \textit{minimal}.
 
-Le nombre de doublons aussi doit être de préférence proche de zero. Dans le cas contraire une requête qui apparait trop souvent influencera plus que les autres la moyenne du temps d'execution. Si par exemple, cette requête s'exécute plus rapidement alors la moyenne se verra sous-éstimé. Par contre, ce facteur reste moins important que le nombre de requête sans réponses. De plus, le nombre de doublons, i.e le nombre de requêtes qui se repéte au moin une fois, n'est pas un nombre représentatif du problème des doublons. En effet, si par exemple, on a $N$ doublons et que c'est une seule requête qui se repéte $N$ fois. Alors ce cas sera beaucoup plus problèmatique que le cas où on a $N/2$ requêtes qui se repétent $2$ fois chacune. Donc le nombre maximum de répétition d'une requête est un indicateur à privilégié au nombre de doublons.
+Le nombre de doublons aussi doit être de préférence proche de zéro. Dans le cas contraire une requête qui apparaît trop souvent influencera plus que les autres la moyenne du temps d'exécution. Si par exemple, cette requête s'exécute plus rapidement alors la moyenne se verra sous-estimé. Par contre, ce facteur reste moins important que le nombre de requêtes sans réponses. De plus, le nombre de doublons, i.e le nombre de requêtes qui se répète au moins une fois, n'est pas un nombre représentatif du problème des doublons. En effet, si par exemple, on a $N$ doublons et que c'est une seule requête qui se répète $N$ fois. Alors ce cas sera beaucoup plus problématique que le cas où on a $N/2$ requêtes qui se répètent $2$ fois chacune. Donc le nombre maximum de répétition d'une requête est un indicateur à privilégié au nombre de doublons.
 
 \subsubsection{Vers une amélioration du banc d'essai}
 
-Les requêtes à un seul pattern donnent un résultat satisfaisant. On a donc décider de les laisser tel quel. Par contre, les requêtes avec deux patterns ne le sont pas du tout. Pour remedier à cela nous avons changer les templates associées. On obtient à la fin la figure suivante : 
+Les requêtes à un seul pattern donnent un résultat satisfaisant. On a donc décidé de les laisser tel quel. Par contre, les requêtes avec deux patterns ne le sont pas du tout. Pour remédier à cela nous avons changé les templates associées. On obtient à la fin la figure suivante :
 
 \begin{figure}[!h]
-  \centering
-  \includegraphics[width=1.\textwidth]{img/zero_dup_per_template_ameliore.png}
-  \caption{Nombres de requêtes sans réponses et dupliquées - amélioré}
-  \label{zerodup2}
+\centering
+\includegraphics[width=1.\textwidth]{img/zero_dup_per_template_ameliore.png}
+\caption{Nombres de requêtes sans réponses et dupliquées - amélioré}
+\label{zerodup2}
 \end{figure}
 
-On voit ici que le nombre de requêtes sans réponses est assez faible. Par contre, le nombre de doublons n'a pas changé. Ceci est dù à l'implémentation de \textit{WatDiv} qui ne permet pas\footnote{En tout cas, pas à notre connaissance} la génération de requêtes sans doublons.
+On voit ici que le nombre de requêtes sans réponses est assez faible. Par contre, le nombre de doublons n'a pas changé. Ceci est dû à l'implémentation de \textit{WatDiv} qui ne permet pas\footnote{En tout cas, pas à notre connaissance} la génération de requêtes sans doublons.
 
-Pour remedier à cela, nous avons calculé, comme précisé dans la section précédente, le nombre maximum de répétition d'une requête (Qu'on va noté $M$ dans ce qui suit). Ce qui nous donne le graphe ci-dessous.
+Pour remédier à cela, nous avons calculé, comme précisés dans la section précédente, le nombre maximum de répétition d'une requête (Qu'on va noter $M$ dans ce qui suit). Ce qui nous donne le graphe ci-dessous.
 
 \begin{figure}[!h]
-  \centering
-  \includegraphics[width=1.\textwidth]{img/max_dup.png}
-  \caption{Nombres maximum de répétition d'une requête par template}
-  \label{maxdup}
+\centering
+\includegraphics[width=1.\textwidth]{img/max_dup.png}
+\caption{Nombres maximum de répétition d'une requête par template}
+\label{maxdup}
 \end{figure}
 
-On observe ici que, pour les requêtes à un seul pattern, $M$ n'excéde pas 15. Ce qui est un bon résultat. Mais, pour ce qui est des requêtes à deux pattern et plus, on a un $M$ qui tourne autour des 100. Donc une requête qui se repéte 100 fois influencera forcement la partie d'évaluation des performances.
+On observe ici que, pour les requêtes à un seul pattern, $M$ n'excède pas 15. Ce qui est un bon résultat. Mais, pour ce qui est des requêtes à deux pattern et plus, on a un $M$ qui tourne autour des 100. Donc une requête qui se répète 100 fois influencera forcement la partie d'évaluation des performances.
 
-En changeant les templates ont a pas réussi à minimiser les deux valeurs de façon satisfaisante. Le meilleur résultat qu'on a pu avoir est le suivant :
+En changeant les templates on n'a pas réussi à minimiser les deux valeurs de façon satisfaisante. Le meilleur résultat qu'on a pu avoir est le suivant :
 
 \begin{figure}[!h]
-  \centering
-  \includegraphics[width=0.70\textwidth]{img/max_dup_final.png}
-  \caption{Nombres maximum de répétition d'une requête par template - amelioré}
-  \label{maxdupfinal}
+\centering
+\includegraphics[width=0.70\textwidth]{img/max_dup_final.png}
+\caption{Nombres maximum de répétition d'une requête par template - amelioré}
+\label{maxdupfinal}
 \end{figure}
 
-On a réussi a trouvé des templates à deux patterns avec un résultat satisfaisant, mais pour ce qui est des requêtes à 3 patterns il est beaucoup plus compliqué d'en trouver. Si une template donne peu de duplications alors elle donnera forcement plus requêtes sans réponses. On a donc décider de privilégié cette derniére.
+On a réussi a trouvé des templates à deux patterns avec un résultat satisfaisant, mais pour ce qui est des requêtes à 3 patterns, il est beaucoup plus compliqué d'en trouver. Si une template donne peu de duplications alors elle donnera forcément plus de requêtes sans réponses. On a donc décidé de privilégier cette dernière.
 
 \section{Hardware et Software}
 
-Les tests se feront dans une machine avec les caractèristiques suivantes :
+Les tests se feront dans une machine avec les caractéristiques suivantes :
 
 \paragraph{Hardware}
 
 \begin{description}
-  \item[CPU] Intel(R) Core(TM) i5-7200U CPU @ 2.50GHz, 3072 KB cache $\times$ 4
-  \item[Mémoire vive] 7,6 Gio
-  \item[Disque] 1 To Toshiba @ 5400 RPM
+\item[CPU] Intel(R) Core(TM) i5-7200U CPU @ 2.50GHz, 3072 KB cache $\times$ 4
+\item[Mémoire vive] 7,6 Gio
+\item[Disque] 1 To Toshiba @ 5400 RPM
 \end{description}
 
 \paragraph{Software}
 
 \begin{description}
-  \item[Système d'exploitation] Pop!\_OS 21.04, 64 bits
-  \item[Java] OpenJDK 11.0.11 2021-04-20
-  \item[Python] Python 3.9.5
+\item[Système d'exploitation] Pop!\_OS 21.04, 64 bits
+\item[Java] OpenJDK 11.0.11 2021-04-20
+\item[Python] Python 3.9.5
 \end{description}
 
-Cette configuration n'est pas optimale. En effet, la machine utilisé est un ordinateur portable, ce qui n'est pas le serveur de base de données le plus approprié et le plus représentatif. De plus, à cause de la limitation au niveau de la mémoire vive, on ne peut pas charger en mémoire un \textit{dataset} de plus de $2M$ de tuples.
+Cette configuration n'est pas optimale. En effet, la machine utilisée est un ordinateur portable, ce qui n'est pas le serveur de base de données le plus approprié et le plus représentatif. De plus, à cause de la limitation au niveau de la mémoire vive, on ne peut pas charger en mémoire un \textit{dataset} de plus de $2M$ de tuples.
 
 \section{Plans de tests}
 
-Avant de définir les plans de tests, nous devons tout d'abords définir les métriques permettant d’évaluer les performances du moteur de requêtes.
+Avant de définir les plans de tests, nous devons tout d'abord définir les métriques permettant d’évaluer les performances du moteur de requêtes.
 
 \subsection{Métriques}
 
-Le moteur de requêtes peut-être évalué sur plusieurs critères: la qualité, l'efficacité et la performance. 
+Le moteur de requêtes peut-être évalué sur plusieurs critères : la qualité, l'efficacité et la performance.
 
 
 \begin{description}
-  \item[Qualité] On définis la qualité d'un système par le pourcentage des réponses correctes données par ce dernier. Pour cela, on compare nos résultats avec ceux d'un système de confiance. Dans notre cas, ça sera \textit{Jena}.
+\item[Qualité] On définis la qualité d'un système par le pourcentage des réponses correctes données par ce dernier. Pour cela, on compare nos résultats avec ceux d'un système de confiance. Dans notre cas, ça sera \textit{Jena}.
 
-  \begin{description}
-    \item[La correction] est le pourcentage de réponses de notre système qui sont aussi des réponses de \textit{Jena}
-    \item[Complétude] est le pourcentage de réponses de \textit{Jena} qui sont aussi des réponses de notre système.
-  \end{description}
-
-  \item[Temps de réponse] C'est le temps d'evaluation d'une requête ($ms / query$)
-  \item[Débit] Le nombre de requêtes évaluées en un certain temps ($query / ms$)
-  \item[Ressources utilisées] Le nombre de CPU et de mémoire utilisés par le système ($Mo$ ou temps de $CPU$).
-  \item[Scalabilité]
-  \begin{itemize}
-    \item Dégradation du temps de réponse avec plus de données.
-    \item Réduction du temps de réponse avec plus de ressources.
-  \end{itemize}
+\begin{description}
+\item[La correction] est le pourcentage de réponses de notre système qui sont aussi des réponses de \textit{Jena}
+\item[Complétude] est le pourcentage de réponses de \textit{Jena} qui sont aussi des réponses de notre système.
 \end{description}
 
+\item[Temps de réponse] C'est le temps d'évaluation d'une requête ($ms / query$)
+\item[Débit] Le nombre de requêtes évaluées en un certain temps ($query / ms$)
+\item[Ressources utilisées] Le nombre de CPU et de mémoire utilisés par le système ($Mo$ ou temps de $CPU$).
+\item[Scalabilité]
+\begin{itemize}
+\item Dégradation du temps de réponse avec plus de données.
+\item Réduction du temps de réponse avec plus de ressources.
+\end{itemize}
+\end{description}
 \subsection{Facteurs}
 
 Un facteur est une variable ayant des alternatives qui peuvent affecter la mesure des performances du système. Dans notre cas, les facteurs qu'on peut prendre en compte sont les suivants (classés selon leur importance) :
@@ -327,7 +335,7 @@ $A$ étant le facteur de taille des données et $B$ la mémoire. Nous avons obte
 \]
 
 Ce qui indique que la taille des données est un facteur beaucoup plus influant sur le temps d'exécution. Par contre, la taille de la mémoire importe peu tant qu'elle suffit pour charger toute la base de données. Ce qui est un résultat assez logique. L'interaction entre les deux est quant à elle négligeable.
-
+ 
 Ces résultats sont, comme les autres, reproductibles en utilisant le script \textit{test-facteurs.sh}.
 
 \section{Conclusion}
