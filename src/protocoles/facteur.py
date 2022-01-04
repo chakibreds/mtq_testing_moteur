@@ -1,4 +1,5 @@
 import sys
+import os
 import pandas as pd
 import math
 
@@ -15,6 +16,7 @@ if __name__ == '__main__':
         temps = pd.read_csv(dir_qengine + file).iloc[0]['temps total d’évaluation du workload (ms)']
         y['-'.join(file.split('.')[0].split('-')[1:])] = temps
 
+    q = {}
     q['q0'] = (y['low-low'] + y['high-low'] + y['low-high'] + y['high-high'])/4
     q['qA'] = (-y['low-low'] + y['high-low'] - y['low-high'] + y['high-high'])/4
     q['qB'] = (-y['low-low'] - y['high-low'] + y['low-high'] + y['high-high'])/4

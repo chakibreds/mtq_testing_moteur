@@ -1,6 +1,6 @@
 QUERIES=data/queries/file-per-template-final/
-DATA=data/dataset/1000K.nt
-OUTPUT=output/test-final-qengine/
+DATA=data/dataset/2000K.nt
+OUTPUT=output/
 
 PARAM=-queries $(QUERIES) -data $(DATA) -output $(OUTPUT) -export_query_results
 

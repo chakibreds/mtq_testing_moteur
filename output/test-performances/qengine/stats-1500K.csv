@@ -1,0 +1,2 @@
+nom du fichier des données,nom du dossier des reqûetes,nombre de triplets RDF,nombre de requêtes,"temps de lecture des données (ms) ",temps de lecture des requêtes (ms),temps création dico (ms),nombre d’index,temps de création des index (ms),temps total d’évaluation du workload (ms),temps total (du début à la fin du programme) (ms)
+../data/dataset/1500K.nt,../data/queries/file-per-template-final/,1613015,9000,20603.52429,1643.1507510000001,1259.449951000909,6,9214.021678999128,6705.006376999999,29089.228142

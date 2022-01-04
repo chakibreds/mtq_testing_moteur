@@ -10,9 +10,9 @@ def performances_per_dataset(qengine_dir, jena_dir):
         dataset_name = file.split('-')[1].split('.')[0]
         stats_jena = pd.read_csv(jena_dir + file)
         stats_qengine = pd.read_csv(qengine_dir + file)
-        time_per_dataset[dataset_name] = (stats_qengine.iloc[0]['temps total d’évaluation du workload (ms)']/len(files), stats_jena.iloc[0]['temps total d’évaluation du workload (ms)']/len(files))
+        time_per_dataset[dataset_name] = (stats_qengine.iloc[0]['temps total d’évaluation du workload (ms)']/(len(files)*1000), stats_jena.iloc[0]['temps total d’évaluation du workload (ms)']/(len(files)*1000))
         
-    keys = sorted(time_per_dataset.keys())
+    keys = [str(e)+"K" for e in sorted([int(e[:-1]) for e in time_per_dataset.keys()])]
     
     plt.xlabel('nombre de tuples')
     plt.ylabel("temps d'exécution (ms/query)")

@@ -36,7 +36,7 @@ A_LOW=$DATASET_DIR"200K.nt"
 A_HIGH=$DATASET_DIR"2000K.nt"
 
 # 'B' represente la taille de la mémoire low => 1Go, high => 4Go
-B_LOW="-Xmx1G -Xms1G"
+B_LOW="-Xmx2G -Xms2G"
 B_HIGH="-Xmx4G -Xms4G"
 
 echo "Running (low, low)"
