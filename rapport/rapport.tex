@@ -124,7 +124,7 @@ Afin de répondre au besoin de l'évaluation, nous avons générer un \textit{da
 
 \subsubsection{Génération des requêtes}
 
-Afin de générer des requêtes, nous avons écrit un script \textit{Shell} qui, à partir de quelques templates, génére pour chaqu'une d'elle un fichier contenant $1000$ requêtes.
+Afin de générer des requêtes, nous avons écrit un script \textit{Shell} qui, à partir de quelques templates, génére pour chacune d'elle un fichier contenant $1000$ requêtes.
 
 \begin{lstlisting}[language=bash, caption="Extrait du script qui génére les requêtes]
   for template in ${TEMPLATE_DIR}/*.sparql-template;
@@ -172,7 +172,7 @@ On observe clairement sur l'histograme que trois groupes de templates se forment
 
 Ces résultats ne sont pas satisfaisant car ils biaiserons fortement les résultats des performances. En effet, un nombre élevé de requêtes sans réponses affectera forcement le temps d'éxecution de notre implémentation car celle-ci s'arrête dès qu'un des patterns ne donne pas de résultat. la requête ne s'exécute pas entièrement. Cette valeur doit donc être \textit{minimal}.
 
-Le nombre de doublons aussi doit être de préférence proche de zero. Dans le cas contraire une requête qui apparait trop souvent influencera plus que les autres la moyenne du temps d'execution. Si par exemple, cette requête s'exécute plus rapidement alors la moyenne se verra sous-éstimé. Par contre, ce facteur reste moins important que le nombre de requête sans réponses. De plus, le nombre de doublons, i.e le nombre de requêtes qui se repéte au moin une fois, n'est pas un nombre représentatif du problème des doublons. En effet, si par exemple, on a $N$ doublons et que c'est une seule requête qui se repéte $N$ fois. Alors ce cas sera beaucoup plus problèmatique que le cas où on a $N/2$ requêtes qui se repétent $2$ fois chaqu'une. Donc le nombre maximum de répétition d'une requête est un indicateur à privilégié au nombre de doublons.
+Le nombre de doublons aussi doit être de préférence proche de zero. Dans le cas contraire une requête qui apparait trop souvent influencera plus que les autres la moyenne du temps d'execution. Si par exemple, cette requête s'exécute plus rapidement alors la moyenne se verra sous-éstimé. Par contre, ce facteur reste moins important que le nombre de requête sans réponses. De plus, le nombre de doublons, i.e le nombre de requêtes qui se repéte au moin une fois, n'est pas un nombre représentatif du problème des doublons. En effet, si par exemple, on a $N$ doublons et que c'est une seule requête qui se repéte $N$ fois. Alors ce cas sera beaucoup plus problèmatique que le cas où on a $N/2$ requêtes qui se repétent $2$ fois chacune. Donc le nombre maximum de répétition d'une requête est un indicateur à privilégié au nombre de doublons.
 
 \subsubsection{Vers une amélioration du banc d'essai}
 
@@ -269,7 +269,7 @@ Un facteur est une variable ayant des alternatives qui peuvent affecter la mesur
   \item Type CPU
 \end{itemize}
 
-Chaqu'un de ces facteurs admet des niveaux (des valeurs possibles) qui peuvent affecter grandement la mesure des performances. Dans l'idéal, on voudra tester toutes les valeurs possibles (\textit{Full Factorial Design}). Mais cela est généralement impossible, car le nombre d'expérimentation à réaliser est exponentielle. Une autre manière de procéder est de faire varier un seul facteur à la fois. Par contre, cette méthode ignorent l'interaction entre les facteurs qui peuvent parfois être importante. Il nous reste le \textit{Fractional Design} qui consiste à choisir un sous-ensemble des facteurs et de réaliser dessus un \textit{Full Factorial Design}. Dans la partie d'évaluation, nous allons réaliser un $2^2$ \textit{Factorial Design}. On choisira 2 facteurs avec 2 niveaux chaqu'un. En effet, cette méthode est simple à analyser avec un modèle de régression non-linéaire. Cette expérimentation portera sur la taille de la mémoire et des données, car ce sont les deux principaux facteurs.
+Chaqu'un de ces facteurs admet des niveaux (des valeurs possibles) qui peuvent affecter grandement la mesure des performances. Dans l'idéal, on voudra tester toutes les valeurs possibles (\textit{Full Factorial Design}). Mais cela est généralement impossible, car le nombre d'expérimentation à réaliser est exponentielle. Une autre manière de procéder est de faire varier un seul facteur à la fois. Par contre, cette méthode ignorent l'interaction entre les facteurs qui peuvent parfois être importante. Il nous reste le \textit{Fractional Design} qui consiste à choisir un sous-ensemble des facteurs et de réaliser dessus un \textit{Full Factorial Design}. Dans la partie d'évaluation, nous allons réaliser un $2^2$ \textit{Factorial Design}. On choisira 2 facteurs avec 2 niveaux chacun. En effet, cette méthode est simple à analyser avec un modèle de régression non-linéaire. Cette expérimentation portera sur la taille de la mémoire et des données, car ce sont les deux principaux facteurs.
 
 \subsection{Protocoles}
 
@@ -309,6 +309,26 @@ On remarque bien du graph, que le temps d'exécution de notre système se dégra
 On remarque aussi que notre système est plus rapide que \textit{Jena} quand il y'a un petit nombre de tuples, ça peut s'expliquer du fait que notre système est conçu pour les requêtes en étoiles seulement, par contre \textit{Jena} est fait pour tout type de requête \textit{SPARQL}. On voit aussi que \textit{Jena} est plus performant que notre système quand le nombre de tuple est de $2000K$, Cela peut être expliqué par le fait que \textit{Jena} n'est pas scalable, ce qui est vrai, vu que le temps d'exécution de \textit{Jena} est presque constant en variant le nombre de tuples, qui est tout le contraire de notre système.
 
 \subsection{Expérience sur la taille des données et de la mémoire}
+
+Nous avons, de plus, réaliser une expérience en faisant varier 2 facteurs avec 2 valeurs chacun. La taille des données (200K et 2M de tuples) ainsi que la mémoire (2Go et 4Go). Ensuite, on a calculé l'importance de ces facteurs via un modèle de régression non-linéaire suivant la formule suivante :
+
+\[
+  y = q_0 + q_A x_A + q_B x_B + q_{AB} x_{AB}
+\]
+
+$A$ étant le facteur de taille des données et $B$ la mémoire. Nous avons obtenu les résultats suivants : 
+
+\[
+  \frac{4\times q_A^2}{4 \times  (q_A^2 + q_B^2 + q_{AB}^2)} = 95\%
+\]
+
+\[
+  \frac{4\times q_B^2}{4 \times  (q_A^2 + q_B^2 + q_{AB}^2)} = 2\%
+\]
+
+Ce qui indique que la taille des données est un facteur beaucoup plus influant sur le temps d'exécution. Par contre, la taille de la mémoire importe peu tant qu'elle suffit pour charger toute la base de données. Ce qui est un résultat assez logique. L'interaction entre les deux est quant à elle négligeable.
+
+Ces résultats sont, comme les autres, reproductibles en utilisant le script \textit{test-facteurs.sh}.
 
 \section{Conclusion}
 
