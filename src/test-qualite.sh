@@ -1,6 +1,6 @@
 # Ce script réalise le protocole de test de qualité
 
-DATASET="../data/dataset/2M.nt"
+DATASET="../data/dataset/1M.nt"
 QUERIES="../data/queries/file-per-template-final/"
 
 PY="./protocoles/qualite.py"
@@ -57,5 +57,5 @@ $CMDJAR $O_JENA -jena > /dev/null
 echo ""
 echo "Runninge "$PY
 
-python $PY $O_QENGINE $O_JENA
+python3 $PY $O_QENGINE $O_JENA
 
