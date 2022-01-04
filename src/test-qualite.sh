@@ -1,6 +1,6 @@
 # Ce script réalise le protocole de test de qualité
 
-DATASET="../data/dataset/1M.nt"
+DATASET="../data/dataset/1500K.nt"
 QUERIES="../data/queries/file-per-template-final/"
 
 PY="./protocoles/qualite.py"
@@ -12,7 +12,7 @@ O_JENA=$OUTPUT"jena/"
 
 CMDJAR="java -jar $JAR -export_query_results -queries $QUERIES -data $DATASET -output "
 
-if [ ! -d $QUERIES ] || [ ! -d $TEMPLATE_DIR ]; then
+if [ ! -d $QUERIES ]; then
    echo "Error: directory not found"
    exit 1
 fi

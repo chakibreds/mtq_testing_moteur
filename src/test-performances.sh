@@ -1,4 +1,4 @@
-# Ce script réalise le protocole de test de qualité
+# Ce script réalise le protocole de test de performance
 
 DATASET_DIR="../data/dataset/"
 QUERIES="../data/queries/file-per-template-final/"
@@ -12,7 +12,7 @@ O_JENA=$OUTPUT"jena/"
 
 CMDJAR="java -jar $JAR -queries $QUERIES"
 
-if [ ! -d $QUERIES ] || [ ! -d $TEMPLATE_DIR ]; then
+if [ ! -d $QUERIES ]; then
    echo "Error: directory not found"
    exit 1
 fi
