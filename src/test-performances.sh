@@ -1,20 +1,16 @@
 # Ce script réalise le protocole de test de qualité
 
-<<<<<<< HEAD
-DATASET="../data/dataset/1M.nt"
-=======
-DATASET="../data/dataset/1500K.nt"
->>>>>>> c0cfc656db9ae0371be229ab0feef5c5aa61d40f
+DATASET_DIR="../data/dataset/"
 QUERIES="../data/queries/file-per-template-final/"
 
-PY="./protocoles/qualite.py"
+PY="./protocoles/performances.py"
 JAR="../rdfengine.jar"
 
-OUTPUT="../output/test-qualite/"
+OUTPUT="../output/test-performances/"
 O_QENGINE=$OUTPUT"qengine/"
 O_JENA=$OUTPUT"jena/"
 
-CMDJAR="java -jar $JAR -export_query_results -queries $QUERIES -data $DATASET -output "
+CMDJAR="java -jar $JAR -queries $QUERIES"
 
 if [ ! -d $QUERIES ] || [ ! -d $TEMPLATE_DIR ]; then
    echo "Error: directory not found"
@@ -47,16 +43,20 @@ else
     fi
 fi
 
-echo "Running qengine on dataset "$DATASET" and queries "$QUERIES
-echo "Output will be in "$O_QENGINE
+echo -e "Queries used : $QUERIES\n"
 
-$CMDJAR $O_QENGINE > /dev/null
-
-echo ""
-echo "Running jena on dataset "$DATASET" and queries "$QUERIES
-echo "Output will be in "$O_JENA
-
-$CMDJAR $O_JENA -jena > /dev/null
+for $dataset in $DATASET_DIR*.nt; do
+    echo "Running QEngine on dataset "$dataset
+    $CMDJAR -dataset $dataset -output $O_QENGINE > /dev/null
+    mv $O_QENGINE"stats.csv" $O_QENGINE"stats-"$dataset".csv"
+    echo "File "$O_QENGINE"stats-$dataset.csv created"
+    
+    echo "Running Jena on dataset "$dataset
+    $CMDJAR -jena -dataset $dataset -output $O_JENA > /dev/null
+    mv $O_JENA"stats.csv" $O_JENA"stats-"$dataset".csv"
+    echo "File "$O_JENA"stats-$dataset.csv created"
+    echo -e "\n"
+done
 
 echo ""
 echo "Runninge "$PY
