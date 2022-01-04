@@ -1,9 +1,0 @@
-#mapping v1 wsdbm:Role uniform
-#mapping v2 wsdbm:User uniform
-
-SELECT ?v0  WHERE {
-	?v0	rdf:type	%v1% .
-	?v0	wsdbm:follows	%v2% .
-	?v0	wsdbm:friendOf	%v2% .
-}
-

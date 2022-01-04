@@ -1,2 +1,0 @@
-nom du fichier des données,nom du fichier des reqûetes,nombre de triplets RDF,nombre de requêtes,"temps de lecture des données (ms) ",temps de lecture des requêtes (ms),temps création dico (ms),nombre d’index,temps de création des index (ms),temps total d’évaluation du workload (ms),temps total (du début à la fin du programme) (ms)
-data/dataset/1M.nt,data/queries/queries-031221-0121.queryset,0,13000,39638.01173,0.0,,6,,17507.680235000014,58255.452155

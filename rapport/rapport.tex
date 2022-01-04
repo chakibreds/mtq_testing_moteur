@@ -304,17 +304,18 @@ Après avoir exécuté notre protocole de contrôle de qualité, nous avons obte
 À noter que ces tests de qualité ont été réaliser sur deux datasets de 1 et 2 millions de tuples. Cette expérimentation est d'ailleurs reproductible en utilisant le script \textit{test-qualite.sh} qui se trouve dans le répertoire \textit{src}.
 
 \subsection{Temps d'évaluation et scalabilité}
-En réalisant le deuxième protocole décrit plus haut, on a obtenu le graph suivant : 
+
+En réalisant le deuxième protocole décrit plus haut, on a obtenu le graphe suivant : 
 
 \begin{figure}[!h]
   \centering
   \includegraphics[width=1.\textwidth]{img/temps_execution.png}
-  \caption{Comparais}
+  \caption{Comparaison des deux systèmes}
 \end{figure}
 
-On remarque bien du graph, que le temps d'exécution de notre système se dégrade, autrement dit le temps d'exécution augmente en variant le nombre de tuples entre $100K$ et $2000K$. Cela peut être définit par la scalabilité. 
+On remarque bien sur le graphe, que le temps d'exécution de notre système se dégrade, autrement dit le temps d'exécution augmente en variant le nombre de tuples entre $100K$ et $2000K$.
 
-On remarque aussi que notre système est plus rapide que \textit{Jena} quand il y'a un petit nombre de tuples, ça peut s'expliquer du fait que notre système est conçu pour les requêtes en étoiles seulement, par contre \textit{Jena} est fait pour tout type de requête \textit{SPARQL}. On voit aussi que \textit{Jena} est plus performant que notre système quand le nombre de tuple est de $2000K$, Cela peut être expliqué par le fait que \textit{Jena} n'est pas scalable, ce qui est vrai, vu que le temps d'exécution de \textit{Jena} est presque constant en variant le nombre de tuples, qui est tout le contraire de notre système.
+On remarque aussi que notre système est plus rapide que \textit{Jena} quand il y a un petit nombre de tuples, ça peut s'expliquer du fait que notre système est conçu pour les requêtes en étoiles seulement, par contre \textit{Jena} est fait pour tout type de requête \textit{SPARQL}. On voit aussi que \textit{Jena} est plus performant que notre système quand le nombre de tuples est de $2000K$. Le temps d'exécution de \textit{Jena} est presque constant en variant le nombre de tuples, ce qui est tout le contraire de notre système.
 
 \subsection{Expérience sur la taille des données et de la mémoire}
 
@@ -340,13 +341,20 @@ Ces résultats sont, comme les autres, reproductibles en utilisant le script \te
 
 \section{Conclusion}
 
+\subsection{\textit{Warm} et \textit{Cold}}
+
+Petite précision concernant les mesures \textit{Warm} et \textit{Cold}. Les mesures \textit{Warm} sont préférables pour le temps d'exécution des requêtes, car elles reflètent la réalité des DBMS. Par contre, pour les tâches réaliser qu'une seule fois, par exemple le chargement des données, les mesures \textit{Cold} sont à préférer.
+
 \subsection{Apport des évaluations}
 
+Ces évaluations ont montré plusieurs points qui n'étaient pas évidant à première vue. On pense notamment, à la non scalabilité de notre système. En effet, les tests ont montré qu'à partir d'environ $2000k$ tuples, le système \textit{Jena} deviens beaucoup plus performant que le nôtre. De plus, on pu démontré la correction et la complétude de notre système.
+
+Aussi, grâce à l'expérience $2^2$, on a bien vu l'importance de certains facteurs par rapport à d'autres.
+
 \subsection{Perspectives d'amélioration}
-Notre système traite les requêtes en étoiles seulement, on aurait voulu traiter plus de type de requête pour que notre système soit comparable entièrement à \textit{Jena}. 
 
-On aurait pu supprimer les doublons pour peut être avoir une meilleure évaluation, mais on a pensé qu'on aura un petit workload, donc ce qui était possible de faire, c'est de chercher encore plus loin en ce qui concerne le model et les templates, pour avoir un workload sans doublans et sans réponses vides. 
+Notre système traite les requêtes en étoiles seulement, on aurait voulu traiter plus de type de requête pour que notre système soit entièrement comparable à \textit{Jena}.
 
-
+On aurait pu supprimer les doublants pour peut-être avoir une meilleure évaluation, mais on a pensé qu'on aura un petit workload, donc ce qui était possible de faire, c'est de chercher encore plus loin en ce qui concerne le modèle et les templates, pour avoir un workload sans doublants et sans réponses vides. 
 
 \end{document}
