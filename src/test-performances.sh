@@ -45,21 +45,23 @@ fi
 
 echo -e "Queries used : $QUERIES\n"
 
-for $dataset in $DATASET_DIR*.nt; do
+for dataset in $DATASET_DIR*.nt; do
     echo "Running QEngine on dataset "$dataset
-    $CMDJAR -dataset $dataset -output $O_QENGINE > /dev/null
-    mv $O_QENGINE"stats.csv" $O_QENGINE"stats-"$dataset".csv"
-    echo "File "$O_QENGINE"stats-$dataset.csv created"
+    $CMDJAR -data $dataset -output $O_QENGINE > /dev/null
+    dataset_name=${dataset##*/}
+    dataset_name=${dataset_name%.nt}
+    mv $O_QENGINE"stats.csv" $O_QENGINE"stats-"$dataset_name".csv"
+    echo "File "$O_QENGINE"stats-$dataset_name.csv created"
     
     echo "Running Jena on dataset "$dataset
-    $CMDJAR -jena -dataset $dataset -output $O_JENA > /dev/null
-    mv $O_JENA"stats.csv" $O_JENA"stats-"$dataset".csv"
-    echo "File "$O_JENA"stats-$dataset.csv created"
+    $CMDJAR -jena -data $dataset -output $O_JENA > /dev/null
+    mv $O_JENA"stats.csv" $O_JENA"stats-"$dataset_name".csv"
+    echo "File "$O_JENA"stats-$dataset_name.csv created"
     echo -e "\n"
 done
 
 echo ""
-echo "Runninge "$PY
+echo "Running "$PY
 
 python3 $PY $O_QENGINE $O_JENA
 

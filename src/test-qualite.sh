@@ -1,10 +1,6 @@
 # Ce script réalise le protocole de test de qualité
 
-<<<<<<< HEAD
 DATASET="../data/dataset/1M.nt"
-=======
-DATASET="../data/dataset/1500K.nt"
->>>>>>> c0cfc656db9ae0371be229ab0feef5c5aa61d40f
 QUERIES="../data/queries/file-per-template-final/"
 
 PY="./protocoles/qualite.py"
